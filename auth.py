@@ -4,7 +4,7 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from passlib.context import CryptContext
-from classes import UserInDB, User, TokenData, Token
+from classes import UserInDB, User, TokenData
 
 # to get a string like this run:
 # openssl rand -hex 32
