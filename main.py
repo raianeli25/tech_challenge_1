@@ -1,6 +1,6 @@
 from typing import Union, Annotated
 from web_scrapping import get_export_import_page, get_production_commercialization_page, get_processing_page
-from classes import ModelExport, ModelImport, ModelProcessing
+from classes import ModelExport, ModelImport, ModelProcessing, Token
 from fastapi import FastAPI, Path, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from auth import *
