@@ -10,7 +10,7 @@ def html_to_list(url):
 
     soup = BeautifulSoup(html_doc, 'html.parser')
 
-    #extract table infos into a dict
+    #extract table infos into a list
     data = []
     for row in soup.find_all('tr'):
         row_data = []
@@ -56,7 +56,6 @@ def get_production_commercialization_page(url,categorias):
     res= {"data":[]}
     for index in range(0,len(data_new)):
         if data_new[index] != []: 
-            #import ipdb; ipdb.set_trace()
             try:
                 if categorias.index(data_new[index][0]) != None:
                     categoria = data_new[index][0]
@@ -78,7 +77,6 @@ def get_processing_page(url,categorias):
     res= {"data":[]}
     for index in range(0,len(data_new)):
         if data_new[index] != []: 
-            #import ipdb; ipdb.set_trace()
             try:
                 if categorias.index(data_new[index][0]) != None:
                     categoria = data_new[index][0]

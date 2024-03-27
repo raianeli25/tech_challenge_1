@@ -1,6 +1,6 @@
 from typing import Union, Annotated
 from web_scrapping import get_export_import_page, get_production_commercialization_page, get_processing_page
-from classes import ModelExport, ModelImport, ModelProcessing, UserInDB, User
+from classes import ModelExport, ModelImport, ModelProcessing
 from fastapi import FastAPI, Path, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from auth import *
@@ -23,7 +23,6 @@ async def login_for_access_token(
         data={"sub": user.username}, expires_delta=access_token_expires
     )
     return Token(access_token=access_token, token_type="bearer")
-
 
 @app.get("/export/{tipo_produto}/{ano}")
 def read_export_page(
