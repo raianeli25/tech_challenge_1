@@ -1,6 +1,6 @@
 ## Tech Challenge #1 **🧩**
 
-Esse projeto foi desenvolvido com o objetivo de resolver um desafio de pós gradução do curso de Engenharia de Machine Learning da FIAP.
+🎯 Esse projeto foi desenvolvido com o objetivo de resolver um desafio de pós gradução do curso de Engenharia de Machine Learning da FIAP.
 
 A tarefa é criar uma API que retorne os dados de vitivinicultura da Embrapa, disponíveis [aqui](http://vitibrasil.cnpuv.embrapa.br/index.php?opcao=opt_01).
 
@@ -12,7 +12,7 @@ A API consulta as seguintes abas:
 * Importação
 * Exportação
 
-### **Tecnologias utilizadas 💻**
+### **Tecnologias utilizadas 💡**
 
 ---
 
