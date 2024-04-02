@@ -63,4 +63,4 @@ INFO:     Application startup complete.
 
 5. Acesse a API pelo link mostrado na linha 2: http://127.0.0.1:8000 e leia a documentação da API em http://127.0.0.1:8000/docs para começar a usá-la.
 
-**Obs.:** É necessário realizar autenticação para consumir a API, utilize login *admin* e senha *admin.* Esta aplicação foi testada nas versões de python 3.9 e 3.10.
+**Obs.:** É necessário realizar a autenticação para consumir a API, utilize login *admin* e senha *admin.* Esta aplicação foi testada nas versões de python 3.9 e 3.10.
