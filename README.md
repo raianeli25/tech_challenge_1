@@ -33,11 +33,11 @@ O projeto foi todo desenvolvido em python, foi utilizado o framework [FAST API](
     └── web_scrapping.py
 ```
 
-* auth.py: arquivo responsável por toda a parte de autenticação da API, aqui utilizamos JWT, como sugerido.
-* classes.py: todas as classes que foram definidas neste projeto estão concentradas neste arquivo.
-* main.py: arquivo principal, que contém todos os endpoints da API.
-* requirements.txt: arquivo com todos os pacotes necessários para rodar este projeto.
-* web_scrapping.py: arquivo que contém todas as funções utilizadas na API.
+* **auth.py:** arquivo responsável por toda a parte de autenticação da API, aqui utilizamos JWT, como sugerido.
+* **classes.py:** todas as classes que foram definidas neste projeto estão concentradas neste arquivo.
+* **main.py:** arquivo principal, que contém todos os endpoints da API.
+* **requirements.txt:** arquivo com todos os pacotes necessários para rodar este projeto.
+* **web_scrapping.py:** arquivo que contém todas as funções utilizadas na API.
 
 ### Início rápido 🚀
 
