@@ -24,6 +24,10 @@ async def login_for_access_token(
     )
     return Token(access_token=access_token, token_type="bearer")
 
+@app.get("/")
+def home():
+    return "Esta API retorna os dados de vitivinicultura do site da Embrapa, para mais informações acesse /docs"
+
 @app.get("/export/{tipo_produto}/{ano}")
 def read_export_page(
             tipo_produto: ModelExport,
