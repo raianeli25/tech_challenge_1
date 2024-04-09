@@ -10,21 +10,18 @@ def html_to_list(url):
 
     soup = BeautifulSoup(html_doc, 'html.parser')
 
+    table = soup.find('table', {'class': 'tb_base tb_dados'})
+
     #extract table infos into a list
     data = []
-    for row in soup.find_all('tr'):
+    for row in table.find_all('tr'):
         row_data = []
         for cell in row.find_all('td'):
             row_data.append(cell.text)
         data.append(row_data)
 
-    #cut data
-    for index in range(len(data)):
-        for sub_index in range(len(data[index])):
-            if 'Ano:' in data[index][sub_index]:
-                data_new = data[index+1:]
-            if 'Total' in data[index][sub_index]:
-                data_new = data_new[:-(len(data)-index)+1]
+    #remove total line
+    data_new = data[:-1]
 
     #cleaning data
     for index in range(len(data_new)):
