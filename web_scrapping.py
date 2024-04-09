@@ -38,14 +38,11 @@ def get_export_import_page(url,tipo_produto,ano):
     res= {"data":[]}
     for index in range(0,len(data_new)):
         if data_new[index] != []: 
-            if data_new[index][0] == 'Total': #ver melhor formatação ou se tira
-                res['data'].append({'Coluna':data_new[index][0],'Quantidade(kg)':float(data_new[index][1]),'Valor(US$)':float(data_new[index][2]),'Tipo produto':"Todos",'Ano': ano})
-            else:
-                res['data'].append({'País':data_new[index][0],'Quantidade(kg)':float(data_new[index][1]),'Valor(US$)':float(data_new[index][2]),'Tipo produto':tipo_produto,'Ano': ano})
+            res['data'].append({'País':data_new[index][0],'Quantidade(kg)':float(data_new[index][1]),'Valor(US$)':float(data_new[index][2]),'Tipo produto':tipo_produto,'Ano': ano})
 
     return res        
 
-def get_production_commercialization_page(url,categorias,ano):
+def get_production_commercialization_processing_page(url,categorias,tipo_produto,ano):
 
     data_new = html_to_list(url)
 
@@ -60,35 +57,9 @@ def get_production_commercialization_page(url,categorias,ano):
             except:
                 pass
             if data_new[index][0] not in categorias:
-                if data_new[index][0] == 'Total': #ver melhor formatação ou se tira
-                    res['data'].append({'Produto':data_new[index][0],'Quantidade(L.)':float(data_new[index][1]), 'Ano': ano})
+                if tipo_produto != None:
+                        res['data'].append({'Produto':data_new[index][0],'Quantidade(L.)':float(data_new[index][1]),'Categoria':categoria, 'Tipo produto': tipo_produto, 'Total Categoria':float(total),'Ano': ano})
                 else:
                     res['data'].append({'Produto':data_new[index][0],'Quantidade(L.)':float(data_new[index][1]),'Categoria':categoria, 'Total Categoria':float(total),'Ano': ano})
     return res
-
-def get_processing_page(url,categorias,tipo_produto,ano):
-
-    data_new = html_to_list(url)
-
-    #convert to dict
-    res= {"data":[]}
-    for index in range(0,len(data_new)):
-        if data_new[index] != []: 
-            try:
-                if categorias.index(data_new[index][0]) != None:
-                    categoria = data_new[index][0]
-                    total = data_new[index][1]
-            except:
-                pass
-            if data_new[index][0] not in categorias:
-                if data_new[index][0] == 'Total': #ver melhor formatação ou se tira
-                    res['data'].append({'Produto':data_new[index][0],'Quantidade(Kg.)':float(data_new[index][1]),'Tipo produto':"Todos",'Ano': ano})
-                else:
-                    res['data'].append({'Produto':data_new[index][0],'Quantidade(Kg.)':float(data_new[index][1]),'Categoria':categoria, 'Total Categoria':total,'Tipo produto':tipo_produto,'Ano': ano})
-    return res
-
-
-
-
-
 

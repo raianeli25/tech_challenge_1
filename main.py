@@ -1,5 +1,5 @@
 from typing import Union, Annotated
-from web_scrapping import get_export_import_page, get_production_commercialization_page, get_processing_page
+from web_scrapping import get_export_import_page, get_production_commercialization_processing_page
 from classes import ModelExport, ModelImport, ModelProcessing, Token
 from fastapi import FastAPI, Path, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
@@ -70,7 +70,7 @@ def read_production_page(
     url = f'http://vitibrasil.cnpuv.embrapa.br/index.php?ano={ano}&opcao=opt_02'
     categorias_production=['VINHO DE MESA','VINHO FINO DE MESA (VINÍFERA)','SUCO','DERIVADOS']
 
-    return get_production_commercialization_page(url,categorias_production,ano)
+    return get_production_commercialization_processing_page(url,categorias_production,None,ano)
 
 @app.get("/commercialization/{ano}")
 def read_commercialization_page(
@@ -81,7 +81,7 @@ def read_commercialization_page(
     url = f'http://vitibrasil.cnpuv.embrapa.br/index.php?ano={ano}&opcao=opt_04'
     categorias_commercialization=['VINHO DE MESA','VINHO  FINO DE MESA','VINHO FRIZANTE','VINHO ORGÂNICO','VINHO ESPECIAL','ESPUMANTES','SUCO DE UVAS','SUCO DE UVAS CONCENTRADO','OUTROS PRODUTOS COMERCIALIZADOS']
     
-    return get_production_commercialization_page(url,categorias_commercialization,ano)
+    return get_production_commercialization_processing_page(url,categorias_commercialization,None,ano)
 
 @app.get("/processing/{tipo_produto}/{ano}")
 def read_processing_page(
@@ -102,4 +102,4 @@ def read_processing_page(
     url = f'http://vitibrasil.cnpuv.embrapa.br/index.php?ano={ano}&opcao=opt_03&subopcao={sub_opcao}'
     categorias_processing=dict_subopcao[tipo_produto][1]
     print(url)
-    return get_processing_page(url,categorias_processing,tipo_produto,ano)
+    return get_production_commercialization_processing_page(url,categorias_processing,tipo_produto,ano)
