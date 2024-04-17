@@ -33,11 +33,11 @@ async def read_users_me(
     return current_user
 
 @app.get("/")
-def home():
+async def home():
     return "Esta API retorna os dados de vitivinicultura do site da Embrapa, para mais informações acesse /docs"
 
 @app.get("/export/{tipo_produto}/{ano}")
-def read_export_page(
+async def read_export_page(
             tipo_produto: ModelExport,
             ano: Annotated[int, Path(title="Ano da busca", ge=1970, le=2022)],
             token: str = Depends(get_current_active_user)
@@ -53,7 +53,7 @@ def read_export_page(
     return get_export_import_page(url,tipo_produto,ano)
 
 @app.get("/import/{tipo_produto}/{ano}")
-def read_import_page(
+async def read_import_page(
             tipo_produto: ModelImport,
             ano: Annotated[int, Path(title="Ano da busca", ge=1970, le=2022)],
             token: str = Depends(get_current_active_user)
@@ -70,7 +70,7 @@ def read_import_page(
     return get_export_import_page(url,tipo_produto,ano)
 
 @app.get("/production/{ano}")
-def read_production_page(
+async def read_production_page(
             ano: Annotated[int, Path(title="Ano da busca", ge=1970, le=2022)],
             token: str = Depends(get_current_active_user)
     ):
@@ -81,7 +81,7 @@ def read_production_page(
     return get_production_commercialization_processing_page(url,categorias_production,None,ano)
 
 @app.get("/commercialization/{ano}")
-def read_commercialization_page(
+async def read_commercialization_page(
             ano: Annotated[int, Path(title="Ano da busca", ge=1970, le=2022)],
             token: str = Depends(get_current_active_user)
     ):
@@ -92,7 +92,7 @@ def read_commercialization_page(
     return get_production_commercialization_processing_page(url,categorias_commercialization,None,ano)
 
 @app.get("/processing/{tipo_produto}/{ano}")
-def read_processing_page(
+async def read_processing_page(
             tipo_produto: ModelProcessing,
             ano: Annotated[int, Path(title="Ano da busca", ge=1970, le=2022)],
             token: str = Depends(get_current_active_user)
