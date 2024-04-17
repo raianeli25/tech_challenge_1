@@ -30,6 +30,7 @@ O projeto foi todo desenvolvido em python, foi utilizado o framework [FAST API](
     ├── classes.py
     ├── main.py
     ├── requirements.txt
+    ├── test_main.py
     └── web_scrapping.py
 ```
 
@@ -37,6 +38,7 @@ O projeto foi todo desenvolvido em python, foi utilizado o framework [FAST API](
 * **classes.py:** todas as classes que foram definidas neste projeto estão concentradas neste arquivo.
 * **main.py:** arquivo principal, que contém todos os endpoints da API.
 * **requirements.txt:** arquivo com todos os pacotes necessários para rodar este projeto.
+* **test_main.py:** arquivo que contém todos os testes da API.
 * **web_scrapping.py:** arquivo que contém todas as funções utilizadas na API.
 
 ### Início rápido 🚀
@@ -64,3 +66,8 @@ INFO:     Application startup complete.
 5. Acesse a API pelo link mostrado na linha 2: http://127.0.0.1:8000 e leia a documentação da API em http://127.0.0.1:8000/docs para começar a usá-la.
 
 **Obs.:** É necessário realizar a autenticação para consumir a API, utilize login *admin* e senha *admin.* Esta aplicação foi testada nas versões de python 3.9 e 3.10.
+
+6. Rode o comando abaixo no diretório raíz do projeto para executar os testes:
+
+   `pytest`
+

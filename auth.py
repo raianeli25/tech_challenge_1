@@ -19,6 +19,13 @@ fake_users_db = {
         "email": "admin@example.com",
         "hashed_password": "$2y$10$LY9EsJH45SHdKvgTnhoeO.IF.A1WRhmpMS4sJ5na5LxXQxUUNGs.K",
         "disabled": False,
+    },
+    "test": {
+        "username": "test",
+        "full_name": "Test user",
+        "email": "test@example.com",
+        "hashed_password": "$2y$10$G3TYEDUVnxfYYl.iXLGsmORMS/MKQegNOnwujlVH6pGZy6G5usFVm",
+        "disabled": False,
     }
 }
 

@@ -7,6 +7,8 @@ from auth import *
 
 app = FastAPI()
 
+root_url = 'http://vitibrasil.cnpuv.embrapa.br/index.php'
+
 @app.post("/token")
 async def login_for_access_token(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()]
@@ -24,6 +26,12 @@ async def login_for_access_token(
     )
     return Token(access_token=access_token, token_type="bearer")
 
+@app.get("/users/me/", response_model=User)
+async def read_users_me(
+    current_user: Annotated[User, Depends(get_current_active_user)],
+):
+    return current_user
+
 @app.get("/")
 def home():
     return "Esta API retorna os dados de vitivinicultura do site da Embrapa, para mais informações acesse /docs"
@@ -40,7 +48,7 @@ def read_export_page(
                      'suco_de_uva':'subopt_04'}
     
     sub_opcao = dict_subopcao[tipo_produto]
-    url = f'http://vitibrasil.cnpuv.embrapa.br/index.php?ano={ano}&opcao=opt_06&subopcao={sub_opcao}'
+    url = f'{root_url}?ano={ano}&opcao=opt_06&subopcao={sub_opcao}'
 
     return get_export_import_page(url,tipo_produto,ano)
 
@@ -57,7 +65,7 @@ def read_import_page(
                      'suco_de_uva':'subopt_05'}
     
     sub_opcao = dict_subopcao[tipo_produto]
-    url = f'http://vitibrasil.cnpuv.embrapa.br/index.php?ano={ano}&opcao=opt_05&subopcao={sub_opcao}'
+    url = f'{root_url}?ano={ano}&opcao=opt_05&subopcao={sub_opcao}'
 
     return get_export_import_page(url,tipo_produto,ano)
 
@@ -67,7 +75,7 @@ def read_production_page(
             token: str = Depends(get_current_active_user)
     ):
 
-    url = f'http://vitibrasil.cnpuv.embrapa.br/index.php?ano={ano}&opcao=opt_02'
+    url = f'{root_url}?ano={ano}&opcao=opt_02'
     categorias_production=['VINHO DE MESA','VINHO FINO DE MESA (VINÍFERA)','SUCO','DERIVADOS']
 
     return get_production_commercialization_processing_page(url,categorias_production,None,ano)
@@ -78,7 +86,7 @@ def read_commercialization_page(
             token: str = Depends(get_current_active_user)
     ):
 
-    url = f'http://vitibrasil.cnpuv.embrapa.br/index.php?ano={ano}&opcao=opt_04'
+    url = f'{root_url}?ano={ano}&opcao=opt_04'
     categorias_commercialization=['VINHO DE MESA','VINHO  FINO DE MESA','VINHO FRIZANTE','VINHO ORGÂNICO','VINHO ESPECIAL','ESPUMANTES','SUCO DE UVAS','SUCO DE UVAS CONCENTRADO','OUTROS PRODUTOS COMERCIALIZADOS']
     
     return get_production_commercialization_processing_page(url,categorias_commercialization,None,ano)
@@ -99,7 +107,7 @@ def read_processing_page(
     
     sub_opcao = dict_subopcao[tipo_produto][0]
 
-    url = f'http://vitibrasil.cnpuv.embrapa.br/index.php?ano={ano}&opcao=opt_03&subopcao={sub_opcao}'
+    url = f'{root_url}?ano={ano}&opcao=opt_03&subopcao={sub_opcao}'
     categorias_processing=dict_subopcao[tipo_produto][1]
     print(url)
     return get_production_commercialization_processing_page(url,categorias_processing,tipo_produto,ano)
