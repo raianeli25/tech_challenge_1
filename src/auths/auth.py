@@ -11,7 +11,7 @@ from passlib.context import CryptContext
 # openssl rand -hex 32
 SECRET_KEY = "63aa4f624ddea9281e83c84a2ec553920c77b0680611f098d6b66fb9dec71c20"
 ALGORITHM = "HS256"
-DB_FILE = "./auth/fake_users_db.json"
+DB_FILE = "./auths/fake_users_db.json"
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 

@@ -4,8 +4,8 @@ from typing import Annotated
 from fastapi import APIRouter, HTTPException, status, Depends
 
 from fastapi.security import OAuth2PasswordRequestForm
-from auth.auth import *
-from auth.auth import Token
+from auths.auth import *
+from auths.auth import Token
 
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
