@@ -1,5 +1,4 @@
 from enum import Enum
-from typing import Union
 
 class ModelExport(str, Enum):
     vinhos_de_mesa = "vinhos_de_mesa"
