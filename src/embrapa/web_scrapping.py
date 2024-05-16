@@ -1,65 +1,76 @@
 import requests
 from bs4 import BeautifulSoup
 import re
+from embrapa.static_definitions import EmbrapaConstants
 
-def html_to_list(url):
+class EmbrapaCollect():
+    def __init__(self) -> None:
+        pass
 
-    x = requests.get(url)
+    def html_to_list(self,url):
 
-    html_doc = x.text
+        x = requests.get(url)
 
-    soup = BeautifulSoup(html_doc, 'html.parser')
+        html_doc = x.text
 
-    table = soup.find('table', {'class': 'tb_base tb_dados'})
+        soup = BeautifulSoup(html_doc, 'html.parser')
 
-    #extract table infos into a list
-    data = []
-    for row in table.find_all('tr'):
-        row_data = []
-        for cell in row.find_all('td'):
-            row_data.append(cell.text)
-        data.append(row_data)
+        table = soup.find('table', {'class': 'tb_base tb_dados'})
 
-    #remove total line
-    data_new = data[:-1]
+        #extract table infos into a list
+        data = []
+        for row in table.find_all('tr'):
+            row_data = []
+            for cell in row.find_all('td'):
+                row_data.append(cell.text)
+            data.append(row_data)
 
-    #cleaning data
-    for index in range(len(data_new)):
-        for sub_index in range(len(data_new[index])):
-            data_new[index][sub_index] = re.sub(r"[\n]", "", data_new[index][sub_index]).strip().replace('-','0').replace('nd','0').replace('*','0').replace('.','')
+        #remove total line
+        data_new = data[:-1]
 
-    return data_new
+        #cleaning data
+        VALUE_TO_REPLACE_NULL_CHAR = EmbrapaConstants.VALUE_TO_REPLACE_NULL_CHAR
+        for index in range(len(data_new)):
+            for sub_index in range(len(data_new[index])):
+                data_new[index][sub_index] = re.sub(r"[\n]", "", data_new[index][sub_index]).\
+                    strip().\
+                    replace('-',VALUE_TO_REPLACE_NULL_CHAR).\
+                    replace('nd',VALUE_TO_REPLACE_NULL_CHAR).\
+                    replace('*',VALUE_TO_REPLACE_NULL_CHAR).\
+                    replace('.','')
 
-def get_export_import_page(url,tipo_produto,ano):
-    
-    data_new = html_to_list(url)
+        return data_new
 
-    #convert to dict
-    res= {"data":[]}
-    for index in range(0,len(data_new)):
-        if data_new[index] != []: 
-            res['data'].append({'País':data_new[index][0],'Quantidade(kg)':float(data_new[index][1]),'Valor(US$)':float(data_new[index][2]),'Tipo produto':tipo_produto,'Ano': ano})
+    def get_export_import_page(self,url,tipo_produto,ano):
+        
+        data_new = self.html_to_list(url)
 
-    return res        
+        #convert to dict
+        res= {"data":[]}
+        for index in range(0,len(data_new)):
+            if data_new[index] != []: 
+                res['data'].append({'País':data_new[index][0],'Quantidade(kg)':float(data_new[index][1]),'Valor(US$)':float(data_new[index][2]),'Tipo produto':tipo_produto,'Ano': ano})
 
-def get_production_commercialization_processing_page(url,categorias,tipo_produto,ano):
+        return res        
 
-    data_new = html_to_list(url)
+    def get_production_commercialization_processing_page(self,url,categorias,tipo_produto,ano):
 
-    #convert to dict
-    res= {"data":[]}
-    for index in range(0,len(data_new)):
-        if data_new[index] != []: 
-            try:
-                if categorias.index(data_new[index][0]) != None:
-                    categoria = data_new[index][0]
-                    total = data_new[index][1]
-            except:
-                pass
-            if data_new[index][0] not in categorias:
-                if tipo_produto != None:
-                        res['data'].append({'Produto':data_new[index][0],'Quantidade(L.)':float(data_new[index][1]),'Categoria':categoria, 'Tipo produto': tipo_produto, 'Total Categoria':float(total),'Ano': ano})
-                else:
-                    res['data'].append({'Produto':data_new[index][0],'Quantidade(L.)':float(data_new[index][1]),'Categoria':categoria, 'Total Categoria':float(total),'Ano': ano})
-    return res
+        data_new = self.html_to_list(url)
+
+        #convert to dict
+        res= {"data":[]}
+        for index in range(0,len(data_new)):
+            if data_new[index] != []: 
+                try:
+                    if categorias.index(data_new[index][0]) != None:
+                        categoria = data_new[index][0]
+                        total = data_new[index][1]
+                except:
+                    pass
+                if data_new[index][0] not in categorias:
+                    if tipo_produto != None:
+                            res['data'].append({'Produto':data_new[index][0],'Quantidade(L.)':float(data_new[index][1]),'Categoria':categoria, 'Tipo produto': tipo_produto, 'Total Categoria':float(total),'Ano': ano})
+                    else:
+                        res['data'].append({'Produto':data_new[index][0],'Quantidade(L.)':float(data_new[index][1]),'Categoria':categoria, 'Total Categoria':float(total),'Ano': ano})
+        return res
 

@@ -1,6 +1,7 @@
 from typing import Union, Annotated
-from embrapa.web_scrapping import get_export_import_page, get_production_commercialization_processing_page
+from embrapa.web_scrapping import EmbrapaCollect
 from embrapa.enum_models import ModelExport, ModelImport, ModelProcessing
+from embrapa.static_definitions import EmbrapaConstants
 from fastapi import FastAPI, Path, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from auths.auth import User, get_current_active_user
@@ -36,7 +37,9 @@ async def read_export_page(
     sub_opcao = dict_subopcao[tipo_produto]
     url = f'{root_url}?ano={ano}&opcao=opt_06&subopcao={sub_opcao}'
 
-    return get_export_import_page(url,tipo_produto,ano)
+    collect_data = EmbrapaCollect()
+
+    return collect_data.get_export_import_page(url,tipo_produto,ano)
 
 @app.get("/import/{tipo_produto}/{ano}")
 async def read_import_page(
@@ -53,7 +56,9 @@ async def read_import_page(
     sub_opcao = dict_subopcao[tipo_produto]
     url = f'{root_url}?ano={ano}&opcao=opt_05&subopcao={sub_opcao}'
 
-    return get_export_import_page(url,tipo_produto,ano)
+    collect_data = EmbrapaCollect()
+
+    return collect_data.get_export_import_page(url,tipo_produto,ano)
 
 @app.get("/production/{ano}")
 async def read_production_page(
@@ -64,7 +69,9 @@ async def read_production_page(
     url = f'{root_url}?ano={ano}&opcao=opt_02'
     categorias_production=['VINHO DE MESA','VINHO FINO DE MESA (VINÍFERA)','SUCO','DERIVADOS']
 
-    return get_production_commercialization_processing_page(url,categorias_production,None,ano)
+    collect_data = EmbrapaCollect()
+
+    return collect_data.get_production_commercialization_processing_page(url,categorias_production,None,ano)
 
 @app.get("/commercialization/{ano}")
 async def read_commercialization_page(
@@ -75,7 +82,9 @@ async def read_commercialization_page(
     url = f'{root_url}?ano={ano}&opcao=opt_04'
     categorias_commercialization=['VINHO DE MESA','VINHO  FINO DE MESA','VINHO FRIZANTE','VINHO ORGÂNICO','VINHO ESPECIAL','ESPUMANTES','SUCO DE UVAS','SUCO DE UVAS CONCENTRADO','OUTROS PRODUTOS COMERCIALIZADOS']
     
-    return get_production_commercialization_processing_page(url,categorias_commercialization,None,ano)
+    collect_data = EmbrapaCollect()
+
+    return collect_data.get_production_commercialization_processing_page(url,categorias_commercialization,None,ano)
 
 @app.get("/processing/{tipo_produto}/{ano}")
 async def read_processing_page(
@@ -96,4 +105,7 @@ async def read_processing_page(
     url = f'{root_url}?ano={ano}&opcao=opt_03&subopcao={sub_opcao}'
     categorias_processing=dict_subopcao[tipo_produto][1]
     print(url)
-    return get_production_commercialization_processing_page(url,categorias_processing,tipo_produto,ano)
+
+    collect_data = EmbrapaCollect()
+
+    return collect_data.get_production_commercialization_processing_page(url,categorias_processing,tipo_produto,ano)
