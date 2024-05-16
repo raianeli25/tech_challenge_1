@@ -3,7 +3,7 @@ from web_scrapping import get_export_import_page, get_production_commercializati
 from classes import ModelExport, ModelImport, ModelProcessing
 from fastapi import FastAPI, Path, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
-from auths.auth import *
+from auths.auth import User, get_current_active_user
 from auths import route_token_post
 
 app = FastAPI()
