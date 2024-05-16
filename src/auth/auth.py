@@ -1,22 +1,37 @@
 from datetime import datetime, timedelta, timezone
+from pydantic import BaseModel
 from typing import Annotated, Union, Any
 import json
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from passlib.context import CryptContext
-from classes import UserInDB, User, TokenData
 
 # to get a string like this run:
 # openssl rand -hex 32
 SECRET_KEY = "63aa4f624ddea9281e83c84a2ec553920c77b0680611f098d6b66fb9dec71c20"
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
 DB_FILE = "./auth/fake_users_db.json"
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+class TokenData(BaseModel):
+    username: Union[str, None] = None
+
+class User(BaseModel):
+    username: str
+    email: Union[str, None] = None
+    full_name: Union[str, None] = None
+    disabled: Union[bool, None] = None
+
+class UserInDB(User):
+    hashed_password: str
 
 def read_users_db()->Any:
     with open(DB_FILE) as f:

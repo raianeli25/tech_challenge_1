@@ -1,30 +1,16 @@
 from typing import Union, Annotated
 from web_scrapping import get_export_import_page, get_production_commercialization_processing_page
-from classes import ModelExport, ModelImport, ModelProcessing, Token
+from classes import ModelExport, ModelImport, ModelProcessing
 from fastapi import FastAPI, Path, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from auth.auth import *
+from auth import route_token_post
 
 app = FastAPI()
 
-root_url = 'http://vitibrasil.cnpuv.embrapa.br/index.php'
+app.include_router(route_token_post.router)
 
-@app.post("/token")
-async def login_for_access_token(
-    form_data: Annotated[OAuth2PasswordRequestForm, Depends()]
-) -> Token:
-    user = authenticate_user(read_users_db(), form_data.username, form_data.password)
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect username or password",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = create_access_token(
-        data={"sub": user.username}, expires_delta=access_token_expires
-    )
-    return Token(access_token=access_token, token_type="bearer")
+root_url = 'http://vitibrasil.cnpuv.embrapa.br/index.php'
 
 @app.get("/users/me/", response_model=User)
 async def read_users_me(
