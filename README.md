@@ -71,12 +71,12 @@ INFO:     Application startup complete.
 
 Caso não tenha nenhuma das versões acima disponível e/ou prefira rodar em docker, criamos um Dockerfile para executar a aplicação. Execute os seguintes comandos na raíz do repositório para subir a aplicação:
 
-    `docker build -t fastapi/myapp:1.0 .`
+   `docker build -t fastapi/myapp:1.0 .`
 
-    `docker run -d -p 8000:8000 fastapi/myapp:1.0 `
+   `docker run -d -p 8000:8000 fastapi/myapp:1.0 `
 
 **Obs.:** Após rodar o último comando aparecerá um código do tipo: 6d7f3f69d0820f9c720a729bb8c4b6303cac170fe03a747aa71cd8a26f2b6e7d, utilize as primeiras três letras para rodar o comando abaixo:
 
-    `docker logs 6d7`
+   `docker logs 6d7`
 
 Se tudo der certo, o retorno desse comando será igual ao passo 4 e a aplicação estará disponível localmente da mesma maneira.
