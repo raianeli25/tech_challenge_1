@@ -18,7 +18,6 @@ A API consulta as seguintes abas:
 
 O projeto foi todo desenvolvido em python, foi utilizado o framework [FAST API](https://fastapi.tiangolo.com/) para a criação da API, essa escolha se deve ao fato deste framework ser amplamente utilizado no mercado e ter a facilidade de criação automática da documentação da API. Ainda, utilizamos a biblioteca [Beautiful Soup 4](https://beautiful-soup-4.readthedocs.io/en/latest/) para a parte de web scrapping do projeto.
 
-
 ### Estrutura de pastas **📂**
 
 ---
@@ -64,10 +63,20 @@ INFO:     Application startup complete.
 ```
 
 5. Acesse a API pelo link mostrado na linha 2: http://127.0.0.1:8000 e leia a documentação da API em http://127.0.0.1:8000/docs para começar a usá-la.
-
-**Obs.:** É necessário realizar a autenticação para consumir a API, utilize login *admin* e senha *admin.* Esta aplicação foi testada nas versões de python 3.9 e 3.10.
-
 6. Rode o comando abaixo no diretório raíz do projeto para executar os testes:
 
    `pytest`
 
+**Obs.:** É necessário realizar a autenticação para consumir a API, utilize login *admin* e senha *admin.* Esta aplicação foi testada nas versões de python 3.10 e 3.12.
+
+Caso não tenha nenhuma das versões acima disponível e/ou prefira rodar em docker, criamos um Dockerfile para executar a aplicação. Execute os seguintes comandos na raíz do repositório para subir a aplicação:
+
+    `docker build -t fastapi/myapp:1.0 .`
+
+    `docker run -d -p 8000:8000 fastapi/myapp:1.0 `
+
+**Obs.:** Após rodar o último comando aparecerá um código do tipo: 6d7f3f69d0820f9c720a729bb8c4b6303cac170fe03a747aa71cd8a26f2b6e7d, utilize as primeiras três letras para rodar o comando abaixo:
+
+    `docker logs 6d7`
+
+Se tudo der certo, o retorno desse comando será igual ao passo 4 e a aplicação estará disponível localmente da mesma maneira.
