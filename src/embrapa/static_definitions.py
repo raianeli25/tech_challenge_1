@@ -21,16 +21,6 @@ class EmbrapaConstants():
     # value is entered on the following constant.
     VALUE_TO_REPLACE_NULL_CHAR = '0'
 
-    # Those constants are the column names on the raw table
-    # scraped from the website
-    LIT_PRODUTO = "Produto"
-    LIT_QUANTIDADE_L = "Quantidade (L.)"
-    LIT_CULTIVAR = "Cultivar"
-    LIT_QUANTIDADE_KG = "Quantidade (Kg)"
-    LIT_SEM_DEF = "Sem definição"
-    LIT_PAISES = "Países"
-    LIT_VALOR = "Valor (US$)"
-
     # This dict is used to map the option names with
     # with the option parameters value.
     # Example: to request the page from "Produção" Data, we need the URL
@@ -70,34 +60,3 @@ class EmbrapaConstants():
     CATEGORY_EXCEPTION_LIST = [
         "VINHO FRIZANTE", "VINHO ORGÂNICO", "SUCO DE UVAS CONCENTRADO"
     ]
-
-    # This dict is used to retrieve the correct table header
-    # for each webpage, depending uniquely on the parameters
-    # 'option' and 'suboption'
-    TABLE_HEADERS = {
-        "producao" : {
-            None : [LIT_PRODUTO, LIT_QUANTIDADE_L]
-        },
-        "processamento" : {
-            "viniferas" : [LIT_CULTIVAR, LIT_QUANTIDADE_KG],
-            "americanas_e_hibridas" : [LIT_CULTIVAR, LIT_QUANTIDADE_KG],
-            "uvas_de_mesa" : [LIT_CULTIVAR, LIT_QUANTIDADE_KG],
-            "sem_classificacao" : [LIT_SEM_DEF, LIT_QUANTIDADE_KG]
-        },
-        "comercializacao" : {
-            None : [LIT_PRODUTO, LIT_QUANTIDADE_L]
-        },
-        "importacao" : {
-            "vinhos_de_mesa" : [LIT_PAISES, LIT_QUANTIDADE_KG, LIT_VALOR],
-            "espumantes" : [LIT_PAISES, LIT_QUANTIDADE_KG, LIT_VALOR],
-            "uvas_frescas" : [LIT_PAISES, LIT_QUANTIDADE_KG, LIT_VALOR],
-            "uvas_passas" : [LIT_PAISES, LIT_QUANTIDADE_KG, LIT_VALOR],
-            "suco_de_uva" : [LIT_PAISES, LIT_QUANTIDADE_KG, LIT_VALOR],
-        },
-        "exportacao" : {
-            "vinhos_de_mesa" : [LIT_PAISES, LIT_QUANTIDADE_KG, LIT_VALOR],
-            "espumantes" : [LIT_PAISES, LIT_QUANTIDADE_KG, LIT_VALOR],
-            "uvas_frescas" : [LIT_PAISES, LIT_QUANTIDADE_KG, LIT_VALOR],
-            "suco_de_uva" : [LIT_PAISES, LIT_QUANTIDADE_KG, LIT_VALOR],
-        }
-    }
