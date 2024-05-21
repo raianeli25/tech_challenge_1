@@ -67,6 +67,10 @@ class EmbrapaConstants():
         }
     }
 
+    CATEGORY_EXCEPTION_LIST = [
+        "VINHO FRIZANTE", "VINHO ORGÂNICO", "SUCO DE UVAS CONCENTRADO"
+    ]
+
     # This dict is used to retrieve the correct table header
     # for each webpage, depending uniquely on the parameters
     # 'option' and 'suboption'

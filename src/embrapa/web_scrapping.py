@@ -101,16 +101,21 @@ class EmbrapaCollect(EmbrapaConstants):
         This method identifies this pattern.
         """
         return value.isupper()
+
+    def check_if_category_is_in_exception_list(self,category):
+        if category in self.CATEGORY_EXCEPTION_LIST:
+            return True
+        else:
+            return False
     
     def check_if_tipo_produto_is_not_none(self, value:str)->bool:
         """
-        The table has some rows used to define categories.
-        Such rows always have keys in UPPERCASE.
-        This method identifies this pattern.
+        Check if this page (option) has 
+        an specific type "tipo_produto" (suboption)
         """
         return value != None
 
-    def update_categoria(self, data)->tuple|None:
+    def update_category(self, data)->tuple|None:
         if self.check_if_category(data[0]):
             return (data[0],data[1])
         else:
@@ -177,10 +182,13 @@ class EmbrapaCollect(EmbrapaConstants):
         for index in range(0,len(data_new)):
             if self.check_if_not_empty(data_new[index]): 
                 try:
-                    (categoria, total) = self.update_categoria(data_new[index])
+                    (categoria, total) = self.update_category(data_new[index])
                 except:
                     pass
                 if not self.check_if_category(data_new[index][0]):
+                    new_entry = self.make_entry_prod_processamento_comercializacao(data_new[index],categoria,tipo_produto,total,ano)
+                    res['data'].append(new_entry)
+                elif self.check_if_category_is_in_exception_list(data_new[index][0]):
                     new_entry = self.make_entry_prod_processamento_comercializacao(data_new[index],categoria,tipo_produto,total,ano)
                     res['data'].append(new_entry)
         return res
