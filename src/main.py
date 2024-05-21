@@ -67,11 +67,11 @@ async def read_production_page(
     ):
 
     url = f'{root_url}?ano={ano}&opcao=opt_02'
-    categorias_production=['VINHO DE MESA','VINHO FINO DE MESA (VINÍFERA)','SUCO','DERIVADOS']
+    categorias_production=['VINHO DE MESA','VINHO FINO DE MESA (VINIFERA)','SUCO','DERIVADOS']
 
     collect_data = EmbrapaCollect()
 
-    return collect_data.get_production_commercialization_processing_page(url,categorias_production,None,ano)
+    return collect_data.get_production_commercialization_processing_page(url,None,ano)
 
 @app.get("/commercialization/{ano}")
 async def read_commercialization_page(
@@ -84,7 +84,7 @@ async def read_commercialization_page(
     
     collect_data = EmbrapaCollect()
 
-    return collect_data.get_production_commercialization_processing_page(url,categorias_commercialization,None,ano)
+    return collect_data.get_production_commercialization_processing_page(url,None,ano)
 
 @app.get("/processing/{tipo_produto}/{ano}")
 async def read_processing_page(
@@ -94,18 +94,17 @@ async def read_processing_page(
     ):
 
     dict_subopcao = {
-        "viniferas":["subopt_01",["TINTAS","BRANCAS E ROSADAS"]],
-        "americanas_e_hibridas":["subopt_02",["TINTAS","BRANCAS E ROSADAS"]],
-        "uvas_de_mesa":["subopt_03",["TINTAS","BRANCAS"]],
-        "sem_classificacao":["subopt_04",["Sem classificação"]]
+        "viniferas":"subopt_01",
+        "americanas_e_hibridas":"subopt_02",
+        "uvas_de_mesa":"subopt_03",
+        "sem_classificacao":"subopt_04"
         }
     
-    sub_opcao = dict_subopcao[tipo_produto][0]
+    sub_opcao = dict_subopcao[tipo_produto]
 
     url = f'{root_url}?ano={ano}&opcao=opt_03&subopcao={sub_opcao}'
-    categorias_processing=dict_subopcao[tipo_produto][1]
     print(url)
 
     collect_data = EmbrapaCollect()
 
-    return collect_data.get_production_commercialization_processing_page(url,categorias_processing,tipo_produto,ano)
+    return collect_data.get_production_commercialization_processing_page(url,tipo_produto,ano)
