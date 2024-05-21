@@ -1,3 +1,6 @@
+import logging
+import inspect
+
 import requests
 from bs4 import BeautifulSoup
 import re
@@ -16,19 +19,27 @@ class EmbrapaCollect(EmbrapaConstants):
         Notice that for some options, there is no suboption.
         Example 2: considering year=2020, option=producao (and suboption=None)
         then http://vitibrasil.cnpuv.embrapa.br/index.php?ano=2020&opcao=opt_02
-        """
         '''
-        if subopt_arg is None:
-            url_request = self.URL_INDEX+self.REQ_YEAR+str(ano_arg)+"&"+self.REQ_OPTION+self.OPTIONS_DICT[opt_arg]
-        else:
-            url_request = self.URL_INDEX+self.REQ_YEAR+str(ano_arg)+"&"+self.REQ_SUBOPTION+self.SUBOPTIONS_DICT[opt_arg][subopt_arg]+"&"+self.REQ_OPTION+self.OPTIONS_DICT[opt_arg]
-        return url_request
+
+        logging.info(f'Called {inspect.stack()[0][3]}()')
+
+        try:
+            if subopt_arg is None:
+                url_request = self.URL_INDEX+self.REQ_YEAR+str(ano_arg)+"&"+self.REQ_OPTION+self.OPTIONS_DICT[opt_arg]
+            else:
+                url_request = self.URL_INDEX+self.REQ_YEAR+str(ano_arg)+"&"+self.REQ_SUBOPTION+self.SUBOPTIONS_DICT[opt_arg][subopt_arg]+"&"+self.REQ_OPTION+self.OPTIONS_DICT[opt_arg]
+            return url_request
+        except:
+            logging.info(f'Unexpected error in {inspect.stack()[0][3]}()')
+            raise Exception()
 
     def scrap_table_from_website(self, url:str):
         '''
         Receives the URL string, 
         makes the request to the website and returns its HTML table.
         '''
+        logging.info(f'Called {inspect.stack()[0][3]}()')
+
         x = requests.get(url)
         html_doc = x.text
         soup = BeautifulSoup(html_doc, 'html.parser')
@@ -47,6 +58,9 @@ class EmbrapaCollect(EmbrapaConstants):
         data =  [   [Argentina	25.276.991	83.918.138  ],
                     [Brasil	    6.229	    76.894      ] ]
         '''
+
+        logging.info(f'Called {inspect.stack()[0][3]}()')
+
         data:list = []
         for row in table.find_all('tr'):
             row_data = []
@@ -63,6 +77,8 @@ class EmbrapaCollect(EmbrapaConstants):
         In this case, it is always the last row from the list.
         '''
 
+        logging.info(f'Called {inspect.stack()[0][3]}()')
+        
         return data[:-1]
 
     def replace_invalid_null_chars(self,data_new:list)->list:
@@ -71,6 +87,9 @@ class EmbrapaCollect(EmbrapaConstants):
         by the constant VALUE_TO_REPLACE_NULL_CHAR.
         Also, numbers come as "string" with separation dots, which are removed.
         '''
+
+        logging.info(f'Called {inspect.stack()[0][3]}()')
+
         VALUE_TO_REPLACE_NULL_CHAR = EmbrapaConstants.VALUE_TO_REPLACE_NULL_CHAR
         for index in range(len(data_new)):
             for sub_index in range(len(data_new[index])):
@@ -89,6 +108,9 @@ class EmbrapaCollect(EmbrapaConstants):
         extract relevant infos into a list and treat invalid
         characters.
         '''
+
+        logging.info(f'Called {inspect.stack()[0][3]}()')
+
         table = self.scrap_table_from_website(url)
         data = self.extract_table_infos_into_list(table)
         data_new = self.remove_total_row(data)
@@ -102,6 +124,7 @@ class EmbrapaCollect(EmbrapaConstants):
         The table has some empty rows (that should be removed).
         This method checks for them.
         """
+        
         return value != []
 
     def check_if_category(self, value:str)->bool:
@@ -110,6 +133,7 @@ class EmbrapaCollect(EmbrapaConstants):
         Such rows always have keys in UPPERCASE.
         This method identifies this pattern.
         """
+
         return value.isupper()
 
     def check_if_category_is_in_exception_list(self,category:str)->bool:
@@ -118,6 +142,7 @@ class EmbrapaCollect(EmbrapaConstants):
         that also have values (representing the products themselves).
         This method checks for them for an after treatment.
         '''
+
         if category in self.CATEGORY_EXCEPTION_LIST:
             return True
         else:
@@ -128,6 +153,7 @@ class EmbrapaCollect(EmbrapaConstants):
         Check if this page (option) has 
         an specific type "tipo_produto" (suboption)
         """
+
         return value != None
 
     def update_category(self, data:list)->tuple|None:
@@ -135,6 +161,7 @@ class EmbrapaCollect(EmbrapaConstants):
         Check if this is a category and returns a tuple (categoria, total) in this case.
         Otherwise, raises an error for after treatment and generates no return.
         """
+
         if self.check_if_category(data[0]):
             return (data[0],data[1])
         else:
@@ -145,6 +172,7 @@ class EmbrapaCollect(EmbrapaConstants):
         Make a new dict-formatted entry to be returned
         suitable for pages "Importação" and "Exportação"
         '''
+
         return {
             'País':data[0],
             'Quantidade(kg)':float(data[1]),
@@ -158,6 +186,7 @@ class EmbrapaCollect(EmbrapaConstants):
         Make a new dict-formatted entry to be returned
         suitable for pages "Produção", "Comercialização" e "Processamento".
         '''
+
         if self.check_if_tipo_produto_is_not_none(tipo_produto):
             new_entry = {
                 'Produto':data_new[0],
@@ -181,6 +210,9 @@ class EmbrapaCollect(EmbrapaConstants):
         '''
         Some entries from the table are empty (i.e., they are []).
         '''
+
+        logging.info(f'Called {inspect.stack()[0][3]}()')
+
         return data_new != []
 
     def convert_data_list_to_dict_import_export(self,data_new:list,tipo_produto:str,ano:int)->dict:
@@ -188,6 +220,9 @@ class EmbrapaCollect(EmbrapaConstants):
         This will create a suitable dict/json containing all the data
         scraped from pages importacao/exportacao for a given year.
         '''
+
+        logging.info(f'Called {inspect.stack()[0][3]}()')
+
         # Initialize the result variable
         result = {"data":[]}
         # Run through each row
@@ -207,6 +242,9 @@ class EmbrapaCollect(EmbrapaConstants):
         This will create a suitable dict/json containing all the data
         scraped from pages producao/processamento/comercializacao for a given year.
         '''
+
+        logging.info(f'Called {inspect.stack()[0][3]}()')
+        
         # Initialize variables
         result = {"data":[]}
         categoria = None
