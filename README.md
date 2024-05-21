@@ -34,7 +34,6 @@ O projeto foi todo desenvolvido em python, foi utilizado o framework [FAST API](
     │   ├── __init__.py
     │   └── route_token_post.py
     ├── embrapa
-    │   ├── enum_models.py
     │   ├── __init__.py
     │   ├── static_definitions.py
     │   └── web_scrapping.py
@@ -43,9 +42,12 @@ O projeto foi todo desenvolvido em python, foi utilizado o framework [FAST API](
 ```
 
 - **auth.py:** arquivo responsável por toda a parte de autenticação da API, aqui utilizamos JWT, como sugerido.
-- **classes.py:** todas as classes que foram definidas neste projeto estão concentradas neste arquivo.
+- **Dockerfile:** contém as definições do container (Docker).
+- **fake_users_db.json:** arquivo que simula um database de usuários.
 - **main.py:** arquivo principal, que contém todos os endpoints da API.
 - **requirements.txt:** arquivo com todos os pacotes necessários para rodar este projeto.
+- **route_token_post.py:** cria a rota necessária para expor a a parte de autenticacação à API.
+- **static_definitions.py:** contém todas as definições estáticas utilizadas (e.g. constantes e enum_models).
 - **test_main.py:** arquivo que contém todos os testes da API.
 - **web_scrapping.py:** arquivo que contém todas as funções utilizadas na API.
 
