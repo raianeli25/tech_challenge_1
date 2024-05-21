@@ -7,7 +7,17 @@ class EmbrapaCollect(EmbrapaConstants):
     def __init__(self) -> None:
         pass
 
-    def parsing_url(self,opt_arg,subopt_arg,ano_arg):
+    def parsing_url(self,opt_arg:str,subopt_arg:str,ano_arg:int)->str:
+        '''
+        Creates a suitable string representing the URL for requesting data to Embrapa Website.        
+        Example: considering ano_arg=2020, opt_arg=processamento, subopt_arg=viniferas
+        the URL string after correct parsing should be 
+        http://vitibrasil.cnpuv.embrapa.br/index.php?ano=2020&opcao=opt_03&subopcao=subopt_01
+        Notice that for some options, there is no suboption.
+        Example 2: considering year=2020, option=producao (and suboption=None)
+        then http://vitibrasil.cnpuv.embrapa.br/index.php?ano=2020&opcao=opt_02
+        """
+        '''
         if subopt_arg is None:
             url_request = self.URL_INDEX+self.REQ_YEAR+str(ano_arg)+"&"+self.REQ_OPTION+self.OPTIONS_DICT[opt_arg]
         else:
@@ -102,7 +112,12 @@ class EmbrapaCollect(EmbrapaConstants):
         """
         return value.isupper()
 
-    def check_if_category_is_in_exception_list(self,category):
+    def check_if_category_is_in_exception_list(self,category:str)->bool:
+        '''
+        In the page "comercializacao", there are some exceptional categories
+        that also have values (representing the products themselves).
+        This method checks for them for an after treatment.
+        '''
         if category in self.CATEGORY_EXCEPTION_LIST:
             return True
         else:
@@ -115,7 +130,11 @@ class EmbrapaCollect(EmbrapaConstants):
         """
         return value != None
 
-    def update_category(self, data)->tuple|None:
+    def update_category(self, data:list)->tuple|None:
+        """
+        Check if this is a category and returns a tuple (categoria, total) in this case.
+        Otherwise, raises an error for after treatment and generates no return.
+        """
         if self.check_if_category(data[0]):
             return (data[0],data[1])
         else:
@@ -134,7 +153,7 @@ class EmbrapaCollect(EmbrapaConstants):
             'Ano': ano
             }
 
-    def make_entry_prod_processamento_comercializacao(self,data_new,categoria,tipo_produto,total,ano)->dict:
+    def make_entry_prod_processamento_comercializacao(self,data_new:list,categoria:str,tipo_produto:str,total:str,ano:int)->dict:
         '''
         Make a new dict-formatted entry to be returned
         suitable for pages "Produção", "Comercialização" e "Processamento".
@@ -158,51 +177,74 @@ class EmbrapaCollect(EmbrapaConstants):
             }
         return new_entry
 
-    def check_if_row_is_not_empty(self,data_new)->bool:
+    def check_if_row_is_not_empty(self,data_new:list)->bool:
         '''
-        Some entries from the table are empty (the return is []).
+        Some entries from the table are empty (i.e., they are []).
         '''
         return data_new != []
 
-    def convert_data_list_to_dict_import_export(self,data_new,tipo_produto,ano):
-        res= {"data":[]}
+    def convert_data_list_to_dict_import_export(self,data_new:list,tipo_produto:str,ano:int)->dict:
+        '''
+        This will create a suitable dict/json containing all the data
+        scraped from pages importacao/exportacao for a given year.
+        '''
+        # Initialize the result variable
+        result = {"data":[]}
+        # Run through each row
         for index in range(0,len(data_new)):
+            # Just check if not an empty table entry (i.e. [])
             if self.check_if_not_empty(data_new[index]):
+                # If not empty, make a new entry and append
                 new_entry = self.make_entry_import_export_pages(
                     data_new[index], tipo_produto, ano
                     )
-                res['data'].append(new_entry)
+                result['data'].append(new_entry)
 
-        return res
+        return result
     
-    def convert_data_list_to_dict_prod_proc_comer(self,data_new,tipo_produto,ano):
-        res= {"data":[]}
+    def convert_data_list_to_dict_prod_proc_comer(self,data_new:list,tipo_produto:str,ano:int)->dict:
+        '''
+        This will create a suitable dict/json containing all the data
+        scraped from pages producao/processamento/comercializacao for a given year.
+        '''
+        # Initialize variables
+        result = {"data":[]}
         categoria = None
         total = None
+        # Run through each row
         for index in range(0,len(data_new)):
-            if self.check_if_not_empty(data_new[index]): 
+            # Just check if not an empty table entry (i.e. [])
+            if self.check_if_not_empty(data_new[index]):
+                # Try to update the category/total values.
+                # This will only succeed if this row has categories (all UPPER)
+                # Otherwise, it raises an exception and do nothing
                 try:
                     (categoria, total) = self.update_category(data_new[index])
                 except:
                     pass
+                # If this is not a category, then it is data to be stored in the dict
                 if not self.check_if_category(data_new[index][0]):
                     new_entry = self.make_entry_prod_processamento_comercializacao(data_new[index],categoria,tipo_produto,total,ano)
-                    res['data'].append(new_entry)
+                    result['data'].append(new_entry)
+                # There are a few exceptional cases where categories should be stored too
                 elif self.check_if_category_is_in_exception_list(data_new[index][0]):
                     new_entry = self.make_entry_prod_processamento_comercializacao(data_new[index],categoria,tipo_produto,total,ano)
-                    res['data'].append(new_entry)
-        return res
+                    result['data'].append(new_entry)
 
-    def get_export_import_page(self,url,tipo_produto,ano):
-        
+        return result
+
+    def get_export_import_page(self,url:str,tipo_produto:str,ano:int)->dict:
+        '''
+        Calls the full routines for scraping and data treatment (pages importacao/exportacao).
+        '''
         data_new = self.html_to_list(url)
-        res = self.convert_data_list_to_dict_import_export(data_new,tipo_produto,ano)
-        return res
+        return self.convert_data_list_to_dict_import_export(data_new,tipo_produto,ano)
 
-    def get_production_commercialization_processing_page(self,url,tipo_produto,ano):
-
+    def get_production_commercialization_processing_page(self,url:str,tipo_produto:str,ano:int)->dict:
+        '''
+        Calls the full routines for scraping and data treatment (pages producao/processamento/comercializacao).
+        '''
         data_new = self.html_to_list(url)
-        res = self.convert_data_list_to_dict_prod_proc_comer(data_new,tipo_produto,ano)
-        return res
+        return self.convert_data_list_to_dict_prod_proc_comer(data_new,tipo_produto,ano)
         
 
