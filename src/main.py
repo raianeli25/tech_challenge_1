@@ -1,7 +1,6 @@
 from typing import Union, Annotated
 from embrapa.web_scrapping import EmbrapaCollect
-from embrapa.enum_models import ModelExport, ModelImport, ModelProcessing
-from embrapa.static_definitions import EmbrapaConstants
+from embrapa.static_definitions import EmbrapaConstants, ModelExport, ModelImport, ModelProcessing
 from fastapi import FastAPI, Path, Depends
 from auths.auth import User, get_current_active_user
 from auths import route_token_post
