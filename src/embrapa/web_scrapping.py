@@ -3,9 +3,16 @@ from bs4 import BeautifulSoup
 import re
 from embrapa.static_definitions import EmbrapaConstants
 
-class EmbrapaCollect():
+class EmbrapaCollect(EmbrapaConstants):
     def __init__(self) -> None:
         pass
+
+    def parsing_url(self,opt_arg,subopt_arg,ano_arg):
+        if subopt_arg is None:
+            url_request = self.URL_INDEX+self.REQ_YEAR+str(ano_arg)+"&"+self.REQ_OPTION+self.OPTIONS_DICT[opt_arg]
+        else:
+            url_request = self.URL_INDEX+self.REQ_YEAR+str(ano_arg)+"&"+self.REQ_SUBOPTION+self.SUBOPTIONS_DICT[opt_arg][subopt_arg]+"&"+self.REQ_OPTION+self.OPTIONS_DICT[opt_arg]
+        return url_request
 
     def scrap_table_from_website(self, url:str):
         '''
