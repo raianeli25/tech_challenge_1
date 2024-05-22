@@ -50,36 +50,51 @@ def test_remove_row_total():
     ("http://vitibrasil.cnpuv.embrapa.br/index.php?ano=2022&subopcao=subopt_01&opcao=opt_05", "64.795.326", False),
     ("http://vitibrasil.cnpuv.embrapa.br/index.php?ano=2022&subopcao=subopt_01&opcao=opt_05", "64795326", True),
 ])
-def test_html_to_list(url:str, str_to_check:str, expected_result:bool):
+def test_if_fields_are_corrected_formated(url:str, str_to_check:str, expected_result:bool):
     collect_data = EmbrapaCollect()
     data = collect_data.html_to_list(url)
 
     assert (any(str_to_check in subset for subset in data)) == expected_result
 
 
-def test_check_if_category():
+def test_check_if_category_is_true():
     TEST_VALUE_UPPER = "VINHO DE MESA"
-    TEST_VALUE_NOT_UPPER = "Tinto"
     collect_data = EmbrapaCollect()
     true_category = collect_data.check_if_category(TEST_VALUE_UPPER)
+
+    assert true_category == True
+
+def test_check_if_category_is_false():
+    TEST_VALUE_NOT_UPPER = "Tinto"
+    collect_data = EmbrapaCollect()
     false_category = collect_data.check_if_category(TEST_VALUE_NOT_UPPER)
 
-    assert (true_category == True) and (false_category == False)
+    assert false_category == False
 
 def test_check_if_category_is_in_exception_list():
     VALUE_IN_EXCEPTION_LIST = "VINHO FRIZANTE"
-    VALUE_NOT_IN_EXCEPTION_LIST = "Tinto"
     
     collect_data = EmbrapaCollect()
     
     collect_data.CATEGORY_EXCEPTION_LIST
     
     is_in_exception_list = collect_data.check_if_category_is_in_exception_list(VALUE_IN_EXCEPTION_LIST)
+
+    assert (is_in_exception_list == True)
+
+def test_check_if_category_is_not_in_exception_list():
+    VALUE_NOT_IN_EXCEPTION_LIST = "Tinto"
+    
+    collect_data = EmbrapaCollect()
+    
+    collect_data.CATEGORY_EXCEPTION_LIST
+    
     not_in_exception_list = collect_data.check_if_category_is_in_exception_list(VALUE_NOT_IN_EXCEPTION_LIST)
 
-    assert (is_in_exception_list == True) and (not_in_exception_list == False)
+    assert (not_in_exception_list == False)
 
-def test_update_category():
+
+def test_update_category_when_is_category():
     URL = "http://vitibrasil.cnpuv.embrapa.br/index.php?ano=2022&opcao=opt_02"
     collect_data = EmbrapaCollect()
     data = collect_data.html_to_list(URL)
