@@ -4,6 +4,7 @@ import inspect
 import requests
 from bs4 import BeautifulSoup
 import re
+
 from embrapa.static_definitions import EmbrapaConstants
 
 class EmbrapaCollect(EmbrapaConstants):
@@ -30,7 +31,7 @@ class EmbrapaCollect(EmbrapaConstants):
                 url_request = self.URL_INDEX+self.REQ_YEAR+str(ano_arg)+"&"+self.REQ_SUBOPTION+self.SUBOPTIONS_DICT[opt_arg][subopt_arg]+"&"+self.REQ_OPTION+self.OPTIONS_DICT[opt_arg]
             return url_request
         except:
-            logging.info(f'Unexpected error in {inspect.stack()[0][3]}()')
+            logging.error(f'Unexpected error in {inspect.stack()[0][3]}()')
             raise Exception()
 
     def scrap_table_from_website(self, url:str):
@@ -205,15 +206,6 @@ class EmbrapaCollect(EmbrapaConstants):
                 'Ano': ano
             }
         return new_entry
-
-    def check_if_row_is_not_empty(self,data_new:list)->bool:
-        '''
-        Some entries from the table are empty (i.e., they are []).
-        '''
-
-        logging.info(f'Called {inspect.stack()[0][3]}()')
-
-        return data_new != []
 
     def convert_data_list_to_dict_import_export(self,data_new:list,tipo_produto:str,ano:int)->dict:
         '''
