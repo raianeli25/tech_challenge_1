@@ -1,9 +1,5 @@
 import pytest
 
-import os
-cwd = os.getcwd()
-print(cwd)
-
 from .web_scrapping import EmbrapaCollect
 
 @pytest.mark.parametrize("opt_arg, subopt_arg, ano_arg, expected_result", [
