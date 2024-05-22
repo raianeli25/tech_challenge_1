@@ -1,10 +1,13 @@
 import logging
-from typing import Union, Annotated
-from embrapa.web_scrapping import EmbrapaCollect
-from embrapa.static_definitions import EmbrapaConstants, ModelExport, ModelImport, ModelProcessing
+from typing import Annotated
+
 from fastapi import FastAPI, Path, Depends
+
 from auths.auth import User, get_current_active_user
 from auths import route_token_post
+
+from embrapa.web_scrapping import EmbrapaCollect
+from embrapa.static_definitions import EmbrapaConstants, ModelExport, ModelImport, ModelProcessing
 
 logging.basicConfig(
     format='%(asctime)s %(levelname)s %(message)s',
