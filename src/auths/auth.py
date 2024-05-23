@@ -4,7 +4,8 @@ from typing import Annotated, Union, Any
 import json
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
-from jose import JWTError, jwt
+import jwt
+from jwt.exceptions import InvalidTokenError
 from passlib.context import CryptContext
 
 # to get a string like this run:
@@ -85,7 +86,7 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
         if username is None:
             raise credentials_exception
         token_data = TokenData(username=username)
-    except JWTError:
+    except InvalidTokenError:
         raise credentials_exception
     user = get_user(read_users_db(), username=token_data.username)
     if user is None:
