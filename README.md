@@ -36,6 +36,7 @@ O projeto foi todo desenvolvido em python, foi utilizado o framework [FAST API](
     ├── embrapa
     │   ├── __init__.py
     │   ├── static_definitions.py
+    │   ├── test_web_scrapping.py
     │   └── web_scrapping.py
     ├── main.py
     └── test_main.py
@@ -49,6 +50,7 @@ O projeto foi todo desenvolvido em python, foi utilizado o framework [FAST API](
 - **route_token_post.py:** cria a rota necessária para expor a a parte de autenticacação à API.
 - **static_definitions.py:** contém todas as definições estáticas utilizadas (e.g. constantes e enum_models).
 - **test_main.py:** arquivo que contém todos os testes da API.
+- **test_web_scrapping.py:** arquivo que contém testes para o módulo `web_scrapping.py`.
 - **web_scrapping.py:** arquivo que contém todas as funções utilizadas na API.
 
 ### Início rápido 🚀
