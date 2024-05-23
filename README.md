@@ -12,6 +12,48 @@ A API consulta as seguintes abas:
 - Importação
 - Exportação
 
+### **Exemplo API 📝**
+
+Exemplo referente a uma das páginas, neste caso, Produção.
+
+---
+
+Dado o input:
+
+- Ano = 2009
+
+Temos HTTP request (GET): /production/2009
+
+Trecho de resposta da API para esta chamada:
+
+```sh
+{
+	"data": [
+		{
+			"Produto": "Tinto",
+			"Quantidade(L.)": 164143454.0,
+			"Categoria": "VINHO DE MESA",
+			"Total Categoria": 205418206.0,
+			"Ano": 2009
+		},
+		{
+			"Produto": "Branco",
+			"Quantidade(L.)": 39211278.0,
+			"Categoria": "VINHO DE MESA",
+			"Total Categoria": 205418206.0,
+			"Ano": 2009
+		},
+		{
+			"Produto": "Rosado",
+			"Quantidade(L.)": 2063474.0,
+			"Categoria": "VINHO DE MESA",
+			"Total Categoria": 205418206.0,
+			"Ano": 2009
+		},
+      ...
+}
+```
+
 ### **Tecnologias utilizadas 💡**
 
 ---
@@ -61,11 +103,9 @@ O projeto foi todo desenvolvido em python, foi utilizado o framework [FAST API](
 2. Instale as dependências do projeto, aqui o ideal é ter um ambiente virtual já criado.
 
    `pip install -r requirements.txt`
-
 3. Rode o comando abaixo para subir o servidor
 
    `uvicorn main:app --reload`
-
 4. Se tudo funcionar corretamente, receberá o retorno abaixo.
 
 ```
