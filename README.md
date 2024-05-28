@@ -139,3 +139,9 @@ Se tudo der certo, o retorno desse comando será igual ao passo 4 e a aplicaçã
 Para executar os testes basta logar no docker através do comando abaixo, após isso rodar o comando do passo 6.
 
 `docker exec -it <container_name> bash`
+
+### Plano de deploy **⚒️**
+---------
+
+![Arquitetura solução](arquitetura_solucao.png)
+
